@@ -10,13 +10,15 @@ HAYANEX ENTERPRISE PARTNERS の静的サイトです。HTML・CSS・JavaScript�
 
 ## 代表審査用ブラウザプレビュー（外部サービス・暫定）
 
-[develop版トップページをブラウザで開く](https://html-preview.github.io/?url=https://github.com/haya00zx-maker/hayanex-official-site/blob/develop/index.html)
+[従来のHTMLプレビュー（CSS・画像の表示不具合を報告済み）](https://html-preview.github.io/?url=https://github.com/haya00zx-maker/hayanex-official-site/blob/develop/index.html)
 
 - このリンクは公開用のGitHub Pagesではなく、外部のHTMLプレビューサービスを利用します。
 - プレビューサービス側でGitHub上のHTML・CSS・JavaScript・画像を取得するため、実際のGitHub Pages配信とは動作条件が異なります。CSP等により一部の表示・操作が動作しない可能性があります。
 - 個人情報・パスワードなどを入力しないでください。未承認の下書きは公開リポジトリから参照可能であり、このリンクはアクセス制限を提供しません。
 - 表示に問題がある場合は、下記ローカルHTTPサーバーでの確認を優先してください。
 - このリンクの追加はdevelop内の文書変更のみです。mainやGitHub Pagesの設定は変更しません。
+
+外部共有URLは正常表示の検証が完了していません。ファイル一式の配信での検証結果、別の配信サービスの候補URL、必要なネットワーク設定は [プレビュー確認手順](docs/PREVIEW.md) を参照してください。
 
 ## ローカル確認
 
