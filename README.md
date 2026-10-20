@@ -33,18 +33,22 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory .
 
 ## 構成
 
-- `index.html`：トップ・全紹介セクション・FAQ・お問い合わせ案内
+- `index.html`：トップ要約、3事業・6プラン・6ステップ、詳細ページへの導線
+- `business-web.html` / `business-system.html` / `business-support.html`：3事業の詳細
+- `pricing.html`：6プラン・支払方針・未確定の契約事項
+- `about.html` / `activities.html` / `faq.html`：会社・事務所、製品・関連活動、FAQ
+- `contact.html`：架空データによる入力確認。通信・保存・実送信なし
 - `privacy.html` / `legal.html`：代表確認用下書き（未施行）
-- `assets/css/site.css`：共通デザイン・レスポンシブ・印刷・動きを減らす設定
-- `assets/js/site.js`：段階的なメニュー機能。JavaScript無効でもリンクを表示
-- `assets/images/`：既存の正式ロゴから作成したWebP表示用画像
-- `714E0BDF-C833-40D7-8F69-ECAA0CCF4B84.PNG`：ロゴ原本。削除・置換していません
-- `tests/verify.cjs`：ブラウザーでの回帰確認
-- `tests/performance.cjs`：ローカルでの描画・転送量・レイアウト移動確認
-- `docs/REVIEW.md`：調査結果、承認事項、公開前チェック、公開手順
-- `docs/TEST-RESULTS.md`：検証結果・制約
+- `assets/css/site.css`：共通デザイン、レスポンシブ、印刷、動きを減らす設定
+- `assets/js/navigation-boot.js` / `site.js`：描画前のメニュー初期化と操作。無効・読込失敗時はリンクを表示
+- `assets/js/contact-demo.js`：必須・メール・文字数の確認と入力消去
+- `assets/images/`：既存ロゴのWebP表示用。PNG原本はそのまま保持
+- `tests/`：全11ページのブラウザー回帰、ページ別性能、メニュー遅延・失敗の確認
+- `docs/REVIEW.md`：公開候補・公開不可機能・未確定事項・承認と除外手順
+- `docs/TEST-RESULTS.md` / `docs/WORKLOG.md`：検証結果と作業記録
+- `docs/CONTACT-BACKEND-DRAFT.md`：本番受付の設計案・未承認事項
 
-内部URLは相対パスです。GitHub Pagesのプロジェクト配下にも対応します。独自ドメインやPagesのURLは推測して設定しません。
+内部URLは相対パスで、GitHub Pagesのプロジェクト配下に対応する構成です。正式URLやドメインは推測して設定していません。全11ページは検索対象外の制作版です。noindexは閲覧制限ではありません。
 
 ## QAの再実行
 
@@ -53,9 +57,14 @@ Node.js・Chromium・Playwrightと、QA用axe-core/HTML Validateが必要です�
 ```sh
 npm install --prefix /tmp/hayanex-qa --cache /tmp/hayanex-npm-cache --no-audit --no-fund --package-lock=false axe-core@4.10.3 html-validate@10.2.1
 node --check assets/js/site.js
-/tmp/hayanex-qa/node_modules/.bin/html-validate index.html privacy.html legal.html
+node --check assets/js/navigation-boot.js
+node --check assets/js/contact-demo.js
+/tmp/hayanex-qa/node_modules/.bin/html-validate "*.html"
 AXE_CORE_PATH=/tmp/hayanex-qa/node_modules/axe-core/axe.min.js node tests/verify.cjs
 node tests/performance.cjs
+node tests/navigation-loading.cjs
+# 親ディレクトリ配信サーバーを別途起動した場合
+PROJECT_URL=http://127.0.0.1:8011/hayanex-official-site/ node tests/project-path.cjs
 ```
 
 別の環境ではPlaywrightもQA用ディレクトリへインストールし、`NODE_PATH`をその`node_modules`へ設定します。Chromiumの場所は`CHROMIUM_PATH`で指定できます。ブラウザーのサンドボックスを利用できる通常の開発環境では、テスト内の`--no-sandbox`を外すことを検討してください。
@@ -64,4 +73,4 @@ node tests/performance.cjs
 
 ## 未確定情報の取扱い
 
-料金・契約・個人情報・決済・組織の位置づけ・連絡先は独断で確定しません。既存developにある関連活動・製品案は確認中として引き継いでいます。`docs/REVIEW.md`の承認一覧を確認してください。フォームは未設置で、受付・契約・決済ができるように見せる操作は実装していません。
+料金・契約・個人情報・決済・組織の位置づけ・連絡先は独断で確定しません。既存developにある関連活動・製品案は確認中として引き継いでいます。`docs/REVIEW.md`の承認一覧を確認してください。入力確認画面は検証用途のみで、本番送信・受付・契約・決済は実装していません。公開する際は検証画面を正式な受付案内に差し替えるか、ページと導線を除外します。
