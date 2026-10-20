@@ -13,7 +13,7 @@
     );
     if (restoreFocus) button.focus();
   };
-  // Apply enhancement only after the handlers and initial state are available.
+  // 操作イベントとARIA状態を揃えてから、読込完了を通知する。
   button.addEventListener("click", () =>
     setOpen(button.getAttribute("aria-expanded") !== "true"),
   );
@@ -43,4 +43,5 @@
   mobile.addEventListener("change", () => setOpen(false));
   setOpen(false);
   document.documentElement.classList.add("js");
+  window.hayanexMenuReady?.();
 })();

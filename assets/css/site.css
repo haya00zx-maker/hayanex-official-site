@@ -143,6 +143,7 @@ summary:focus-visible,
   max-width: 24em;
 }
 .nav-toggle {
+  min-width: 48px;
   display: none;
   align-items: center;
   gap: 0.65rem;
@@ -447,6 +448,15 @@ summary:focus-visible,
 .contact-box a {
   color: var(--gold-light);
 }
+.contact-box .btn-secondary {
+  color: var(--navy);
+  background: white;
+  border-color: white;
+}
+.contact-box .btn-secondary:hover {
+  color: white;
+  background: var(--navy-light);
+}
 .site-footer {
   background: #07192f;
   color: #e1e8f1;
@@ -711,5 +721,149 @@ summary:focus-visible,
   .contact-box p,
   .site-footer a {
     color: #000;
+  }
+}
+/* 共通の詳細ページと、送信しない入力確認画面 */
+.page-intro {
+  padding-block: 2rem 3rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.page-intro h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  max-width: 28em;
+}
+.page-intro p {
+  max-width: 60em;
+}
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+.breadcrumbs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.primary-nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+.plan-price {
+  color: var(--navy) !important;
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-block: 1rem;
+}
+.plan dt {
+  font-weight: 700;
+}
+.plan dd {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+}
+.section-link {
+  margin-top: 1.5rem;
+}
+.footer-directory {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem 1.5rem;
+}
+.footer-directory a {
+  font-size: 0.9375rem;
+}
+.demo-form {
+  max-width: 760px;
+}
+.demo-form fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.demo-form legend {
+  font-weight: 700;
+  padding: 0 0.5rem;
+}
+.form-field {
+  margin-bottom: 1.5rem;
+}
+.form-field label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.form-field input:not([type="checkbox"]),
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #63738a;
+  border-radius: 5px;
+  background: white;
+  color: var(--text);
+  padding: 0.7rem;
+  font: inherit;
+}
+.form-field textarea {
+  resize: vertical;
+}
+.form-field input:focus-visible,
+.form-field select:focus-visible,
+.form-field textarea:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+.form-field [aria-invalid="true"] {
+  border-color: #9a2323 !important;
+}
+.field-help {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  margin-bottom: 0.5rem;
+}
+.field-error {
+  color: #9a2323;
+  font-weight: 600;
+  margin: 0.5rem 0 0;
+}
+.field-error:empty,
+.form-feedback:empty {
+  display: none;
+}
+.form-field .checkbox-label {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  min-height: 48px;
+  padding-block: 0.5rem;
+  cursor: pointer;
+}
+.checkbox-label input {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 0.25rem 0 0;
+  accent-color: var(--navy);
+}
+.form-feedback {
+  border-left: 3px solid var(--gold);
+  background: var(--paper);
+  padding: 1rem;
+}
+@media (max-width: 760px) {
+  .footer-directory {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .demo-form fieldset {
+    padding: 1rem;
   }
 }
