@@ -380,7 +380,7 @@ summary:focus-visible,
   list-style: none;
   counter-reset: step;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   padding: 0;
   margin: 0;
