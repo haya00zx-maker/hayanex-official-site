@@ -68,3 +68,12 @@ CREATE TABLE inquiry_assignments (
   FOREIGN KEY (staff_id) REFERENCES inquiry_staff(id),
   INDEX idx_assigned_staff (staff_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- MFA keys are encrypted with a server-side key stored outside GitHub.
+CREATE TABLE inquiry_staff_mfa (
+  staff_id BIGINT UNSIGNED PRIMARY KEY,
+  encrypted_totp_secret TEXT NOT NULL,
+  last_accepted_counter BIGINT NOT NULL DEFAULT -1,
+  enabled_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  FOREIGN KEY (staff_id) REFERENCES inquiry_staff(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
