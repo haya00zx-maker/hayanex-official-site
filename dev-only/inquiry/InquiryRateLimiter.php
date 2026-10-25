@@ -2,7 +2,11 @@
 declare(strict_types=1);
 /** Development-only database-backed fixed-window limiter; not an HTTP endpoint. */
 final class InquiryRateLimiter {
-    public function __construct(private PDO $db) {}
+    public function __construct(private PDO $db) {
+        if ($db->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION) {
+            throw new InvalidArgumentException('PDO exception error mode is required');
+        }
+    }
     /** Count an attempt before processing the request. Fail closed if DB is unavailable. */
     public function allow(string $identifier, string $secret, int $maxAttempts = 5, int $windowSeconds = 600): bool {
         if ($identifier === '' || strlen($secret) < 32 || $maxAttempts < 1 || $windowSeconds < 60) {
