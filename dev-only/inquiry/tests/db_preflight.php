@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Requires explicitly configured isolated development database.
  */
 if (PHP_SAPI !== 'cli') { http_response_code(403); exit; }
-$expected = ['inquiry_sequences','inquiries','inquiry_requests','notification_outbox','inquiry_rate_limits','inquiry_staff','inquiry_assignments','inquiry_staff_mfa'];
+$expected = ['inquiry_sequences','inquiries','inquiry_requests','notification_outbox','inquiry_rate_limits','inquiry_staff','inquiry_assignments','inquiry_staff_mfa','inquiry_audit_events'];
 $required = ['HAYANEX_DEV_DSN','HAYANEX_DEV_DB_USER','HAYANEX_DEV_DB_PASS'];
 foreach ($required as $name) {
     if (getenv($name) === false) {
