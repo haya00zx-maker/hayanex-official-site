@@ -16,7 +16,7 @@ try {
     if(blocked===shouldBlock){passes++;console.log("PASS "+link);}
     else{failures++;console.error("FAIL "+link+" exit="+r.status+" stderr="+r.stderr);}
   };
-  for(const url of ["contact.html","/contact.html","./privacy.html","../legal.html","/nested/contact.html","legal.html?draft=1","privacy.html#policy"])run(url,true);
+  for(const url of ["contact.html","/contact.html","./privacy.html","../legal.html","/nested/contact.html","legal.html?draft=1","privacy.html#policy","%63ontact.html","/%70rivacy.html"])run(url,true);
   run("about.html",false);
   fs.writeFileSync(path.join(root,"legal.html"),"sample");
   const r=spawnSync(process.execPath,[path.join(__dirname,"check-release-scope.js"),root],{encoding:"utf8",timeout:10000});
