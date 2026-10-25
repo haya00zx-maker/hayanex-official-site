@@ -6,6 +6,7 @@ declare(strict_types=1);
  */
 if (PHP_SAPI !== 'cli') { http_response_code(403); exit(1); }
 $base=__DIR__;
+$incomplete = false;
 $tests=[
     'request_guard_test.php',
     'staff_permissions_test.php',
@@ -16,7 +17,8 @@ $tests=[
 if (extension_loaded('mbstring')) {
     array_unshift($tests,'validator_test.php');
 } else {
-    echo "SKIP validator_test.php: mbstring missing\n";
+    fwrite(STDERR, "INCOMPLETE: validator_test.php requires mbstring; do not accept this run as a release gate.\n");
+    $incomplete = true;
 }
 if (!function_exists('exec') || !function_exists('escapeshellarg')) {
     fwrite(STDERR, "NOT RUN: PHP CLI subprocess functions are unavailable. Run the test files individually.\n");
@@ -33,5 +35,7 @@ foreach ($tests as $test) {
     echo ($code===0?'PASS ':'FAIL ').$test."\n";
     if($code!==0) $failures++;
 }
-echo $failures===0?"Completed offline checks; DB and HTTP integration remain untested.\n":"Offline failures: $failures\n";
-exit($failures===0?0:1);
+if ($failures > 0) { fwrite(STDERR, "FAIL: $failures offline test suite(s) failed.\n"); exit(1); }
+if ($incomplete) { fwrite(STDERR, "INCOMPLETE: available tests passed, but required suite(s) were skipped.\n"); exit(2); }
+echo "PASS: all offline suites passed. DB and HTTP integration remain untested.\n";
+exit(0);
