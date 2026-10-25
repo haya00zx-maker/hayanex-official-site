@@ -24,9 +24,14 @@ for(const page of pages) {
   const html=fs.readFileSync(filename,"utf8");
   for(const [,value] of html.matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)){
     let ref=value.trim();
-    if(ref.startsWith("#")||/^(?:https?:|mailto:|tel:)/i.test(ref)) continue;
-    ref=ref.split(/[?#]/)[0].replace(/^\.\//,"");
-    if(banned.has(ref)) {links++;errors.push(page+" still links to excluded "+ref);}
+    if(ref.startsWith("#")||/^(?:https?:|mailto:|tel:|javascript:|data:)/i.test(ref)) continue;
+    ref=ref.split(/[?#]/)[0].replace(/\\/g,"/");
+    const normalized=path.posix.normalize("/"+ref.replace(/^\/+/, ""));
+    const basename=path.posix.basename(normalized).toLowerCase();
+    if(banned.has(basename)) {
+      links++;
+      errors.push(page+" still links to excluded "+ref);
+    }
   }
   if(/代表確認用の制作版|確認用下書き/.test(html))errors.push(page+" still displays internal review wording");
 }
