@@ -5,32 +5,22 @@ declare(strict_types=1);
  * This is NOT an HTTP endpoint. Never expose this folder as executable web routes.
  * Database credentials must be configured privately outside the public repository.
  */
+require_once __DIR__ . '/InquiryValidator.php';
 final class InquiryRepository {
     public function __construct(private PDO $db) {}
     /**
-     * Atomic idempotent registration. Caller must validate/normalize all fields,
+     * Atomic idempotent registration. Caller must enforce HTTP-boundary validation,
      * enforce CSRF and rate limits, and obtain consent before calling.
      * $key must be a 64-character lowercase hex HMAC/sha256 of a cryptographically
      * random opaque request token; do not use an IP address or personal data as key.
      * Date grouping uses the configured server timezone (Asia/Tokyo).
      */
-    public function register(array $data, string $key): string {
+    public function register(array $data, string $key, bool $privacyConsent): string {
+        if (!$privacyConsent) throw new InvalidArgumentException('Consent required');
         if (!preg_match('/^[a-f0-9]{64}$/D', $key)) {
             throw new InvalidArgumentException('Invalid request key');
         }
-        foreach (['inquiry_type','client_type','person_name','email','service','message'] as $field) {
-            if (!isset($data[$field]) || !is_string($data[$field]) || trim($data[$field]) === '') {
-                throw new InvalidArgumentException('Missing required field');
-            }
-        }
-        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL) ||
-            mb_strlen($data['person_name']) > 50 || mb_strlen($data['message']) > 2000) {
-            throw new InvalidArgumentException('Invalid field format');
-        }
-        $normalized = [];
-        foreach (['inquiry_type','client_type','person_name','organization_name','email','phone','service','message','budget','desired_deadline'] as $name) {
-            $normalized[$name] = isset($data[$name]) ? trim((string)$data[$name]) : '';
-        }
+        $normalized = InquiryValidator::normalize($data);
         $digest = hash('sha256', json_encode($normalized, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE));
         $this->db->beginTransaction();
         try {
