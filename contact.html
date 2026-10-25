@@ -23,7 +23,7 @@
     <script src="assets/js/navigation-boot.js"></script>
 <link rel="stylesheet" href="assets/css/site.css">
     <script src="assets/js/site.js" defer></script>
-    <script src="assets/js/contact-demo.js" defer></script>
+    <script src="assets/js/contact-prototype.js" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">本文へ移動</a>
@@ -74,126 +74,14 @@
           <span class="eyebrow">サービス・活動のご案内</span>
           <h1>お問い合わせ・入力確認</h1>
           <p>
-            正式なお問い合わせの受付は準備中です。この画面は架空データでの入力形式の確認専用です。実在する個人情報や機密情報は入力しないでください。
+            12項目のフォームを設計・入力確認するための試作画面です。架空データのみをご利用ください。送信機能はまだありません。
           </p>
           <p class="notice">
             掲載内容は代表最終承認前です。現在、お申し込み・送信・契約・決済はできません。
           </p>
         </div>
       </div>
-      <section id="demo" class="section">
-        <div class="wrap">
-          <div class="section-heading"><h2>送信しない入力確認</h2></div>
-          <div class="notice">
-            <h3>お問い合わせとして受け付けません</h3>
-            <p>
-              メール・サーバーへの送信、端末への保存、受付番号の発行はありません。入力内容を確認した後は消去してください。
-            </p>
-          </div>
-          <noscript
-            ><p class="notice">
-              JavaScriptが無効のため、入力確認は利用できません。お問い合わせの送信機能はありません。
-            </p></noscript
-          >
-          <div class="demo-form" id="contact-demo">
-            <p id="demo-help">
-              すべて入力確認のための項目です。「サンプルを入れる」で架空データを使用できます。
-            </p>
-            <fieldset id="demo-fields" disabled aria-describedby="demo-help">
-              <legend>架空データによる入力確認</legend>
-              <div class="form-field">
-                <label for="demo-name">表示名（必須・50文字以内）</label
-                ><input
-                  id="demo-name"
-                  type="text"
-                  maxlength="50"
-                  required
-                  autocomplete="off"
-                  aria-describedby="demo-name-error">
-                <p class="field-error" id="demo-name-error"></p>
-              </div>
-              <div class="form-field">
-                <label for="demo-email"
-                  >架空のメールアドレス（必須・254文字以内）</label
-                >
-                <p class="field-help" id="demo-email-help">
-                  例：sample@example.com。実在するアドレスは入力しないでください。
-                </p>
-                <input
-                  id="demo-email"
-                  type="email"
-                  maxlength="254"
-                  required
-                  autocomplete="off"
-                  spellcheck="false"
-                  aria-describedby="demo-email-help demo-email-error">
-                <p class="field-error" id="demo-email-error"></p>
-              </div>
-              <div class="form-field">
-                <label for="demo-category">ご相談の種類（必須）</label
-                ><select
-                  id="demo-category"
-                  required
-                  aria-describedby="demo-category-error"
-                >
-                  <option value="">選択してください</option>
-                  <option value="web">Webサイト制作・運用</option>
-                  <option value="system">Webアプリ・システム開発</option>
-                  <option value="support">事務代行・業務サポート</option>
-                  <option value="other">その他</option>
-                </select>
-                <p class="field-error" id="demo-category-error"></p>
-              </div>
-              <div class="form-field">
-                <label for="demo-message"
-                  >架空のご相談内容（必須・2,000文字以内）</label
-                >
-                <p class="field-help" id="demo-message-help">
-                  住所・電話番号・パスワードなどは入力しないでください。
-                </p>
-                <textarea
-                  id="demo-message"
-                  rows="6"
-                  maxlength="2000"
-                  required
-                  autocomplete="off"
-                  aria-describedby="demo-message-help demo-message-error"
-                ></textarea>
-                <p class="field-error" id="demo-message-error"></p>
-              </div>
-              <div class="form-field">
-                <label class="checkbox-label"
-                  ><input
-                    id="demo-test-only"
-                    type="checkbox"
-                    required
-                    aria-describedby="demo-test-only-error">架空データのみを使用し、送信・受付されないことを確認しました（必須）</label
-                >
-                <p class="field-error" id="demo-test-only-error"></p>
-              </div>
-              <div class="hero-actions">
-                <button type="button" class="btn" id="demo-check">
-                  入力形式を確認する（送信しません）</button
-                ><button
-                  type="button"
-                  class="btn btn-secondary"
-                  id="demo-sample"
-                >
-                  サンプルを入れる</button
-                ><button
-                  type="button"
-                  class="btn btn-secondary"
-                  id="demo-clear"
-                >
-                  入力を消去する
-                </button>
-              </div>
-            </fieldset>
-            <p id="demo-errors" class="form-feedback" role="alert"></p>
-            <p id="demo-status" class="form-feedback" role="status"></p>
-          </div>
-        </div>
-      </section>
+      <section id="prototype" class="section"><div class="wrap"><div class="section-heading"><h2>お問い合わせフォーム（開発用・送信不可）</h2></div><div class="notice"><strong>架空のテストデータだけをご入力ください。</strong><p>実際の送信、メール通知、ファイル保存、受付番号発行は行いません。確認後は画面内の入力を消去してください。</p></div><form id="contact-prototype" autocomplete="off" novalidate><fieldset><legend>入力内容の確認（12項目）</legend><div class="form-field"><label for="cp-type">お問い合わせ区分（必須）</label><select id="cp-type" name="type" required autocomplete="off" aria-describedby="err-type"><option value="">選択してください</option><option value="estimate">お見積もり・制作依頼</option><option value="consult">ご相談</option><option value="other">その他</option></select><p class="field-error" id="err-type"></p></div><div class="form-field"><label for="cp-client">お客様区分（必須）</label><select id="cp-client" name="client" required autocomplete="off" aria-describedby="err-client"><option value="">選択してください</option><option value="person">個人</option><option value="corporate">法人</option><option value="group">団体</option></select><p class="field-error" id="err-client"></p></div><div class="form-field"><label for="cp-name">お名前／ご担当者名（必須）</label><input type="text" id="cp-name" name="name" required autocomplete="off" aria-describedby="err-name" maxlength="50"><p class="field-error" id="err-name"></p></div><div class="form-field"><label for="cp-organization">会社名・団体名（法人・団体の場合）</label><input type="text" id="cp-organization" name="organization"  autocomplete="off" aria-describedby="err-organization" maxlength="120"><p class="field-error" id="err-organization"></p></div><div class="form-field"><label for="cp-email">メールアドレス（必須）</label><input type="email" id="cp-email" name="email" required autocomplete="off" aria-describedby="err-email" maxlength="254"><p class="field-error" id="err-email"></p></div><div class="form-field"><label for="cp-phone">電話番号（任意）</label><input type="tel" id="cp-phone" name="phone"  autocomplete="off" aria-describedby="err-phone" maxlength="20"><p class="field-error" id="err-phone"></p></div><div class="form-field"><label for="cp-service">ご希望のサービス（必須）</label><select id="cp-service" name="service" required autocomplete="off" aria-describedby="err-service"><option value="">選択してください</option><option value="web">Webサイト制作・運用</option><option value="app">Webアプリ・システム開発</option><option value="support">事務代行・業務サポート</option><option value="other">その他</option></select><p class="field-error" id="err-service"></p></div><div class="form-field"><label for="cp-message">ご相談・ご依頼内容（必須）</label><textarea id="cp-message" name="message" required autocomplete="off" aria-describedby="err-message" maxlength="2000" rows="6"></textarea><p class="field-error" id="err-message"></p></div><div class="form-field"><label for="cp-budget">ご希望の予算（任意）</label><input type="text" id="cp-budget" name="budget"  autocomplete="off" aria-describedby="err-budget" maxlength="60"><p class="field-error" id="err-budget"></p></div><div class="form-field"><label for="cp-deadline">ご希望の納期（任意）</label><input type="text" id="cp-deadline" name="deadline"  autocomplete="off" aria-describedby="err-deadline" maxlength="60"><p class="field-error" id="err-deadline"></p></div><div class="form-field"><label for="cp-attachment">ファイル添付（任意・安全性確認後に導入）</label><input id="cp-attachment" type="file" disabled><p class="field-help">この試作画面ではファイルを選択できません。</p></div><div class="form-field"><label class="checkbox-label"><input id="cp-consent" type="checkbox" required>プライバシーポリシーへの同意（確認用・必須）</label><p class="field-error" id="err-consent"></p></div><div class="form-field"><label class="checkbox-label"><input id="cp-demo" type="checkbox" required>架空データのみ使用し、実際には送信されないことを確認しました（必須）</label><p class="field-error" id="err-demo"></p></div><p class="form-feedback" id="cp-error" role="alert"></p><div class="hero-actions"><button class="btn" type="button" id="cp-review">入力内容を確認（送信しません）</button><button class="btn btn-secondary" type="button" id="cp-sample">サンプルを入れる</button><button class="btn btn-secondary" type="reset">入力を消去</button></div></fieldset><div id="cp-review-panel" hidden class="notice" tabindex="-1"><h3>入力形式の確認が完了しました</h3><p>必須項目や形式に問題はありません。お客様情報の送信・保存は行っていません。</p><p><strong>この画面では正式な受付は成立しません。</strong></p><button type="button" class="btn btn-secondary" id="cp-back">入力画面へ戻る</button></div></form></div></section>
       <section id="reception" class="section section-alt">
         <div class="wrap">
           <div class="section-heading"><h2>正式受付に向けた確認事項</h2></div>
