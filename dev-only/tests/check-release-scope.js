@@ -26,6 +26,7 @@ for(const page of pages) {
     let ref=value.trim();
     if(ref.startsWith("#")||/^(?:https?:|mailto:|tel:|javascript:|data:)/i.test(ref)) continue;
     ref=ref.split(/[?#]/)[0].replace(/\\/g,"/");
+    try { ref=decodeURIComponent(ref); } catch { errors.push(page+" invalid URL encoding: "+value); continue; }
     const normalized=path.posix.normalize("/"+ref.replace(/^\/+/, ""));
     const basename=path.posix.basename(normalized).toLowerCase();
     if(banned.has(basename)) {
