@@ -7,7 +7,11 @@ declare(strict_types=1);
  */
 require_once __DIR__ . '/InquiryValidator.php';
 final class InquiryRepository {
-    public function __construct(private PDO $db) {}
+    public function __construct(private PDO $db) {
+        if ($db->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION) {
+            throw new InvalidArgumentException('PDO exception error mode is required');
+        }
+    }
     /**
      * Atomic idempotent registration. Caller must enforce HTTP-boundary validation,
      * enforce CSRF and rate limits, and obtain consent before calling.
@@ -24,8 +28,7 @@ final class InquiryRepository {
         $digest = hash('sha256', json_encode($normalized, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE));
         $this->db->beginTransaction();
         try {
-            // Serialize attempts using an advisory transaction row. This table row is
-            // created with a provisional record? No: lock the day sequence first.
+            // Lock the daily sequence row, serializing concurrent registrations.
             $day = (new DateTimeImmutable('now', new DateTimeZone('Asia/Tokyo')))->format('Y-m-d');
             $this->db->prepare('INSERT INTO inquiry_sequences (received_day,last_number) VALUES (?,0) ON DUPLICATE KEY UPDATE last_number=last_number')->execute([$day]);
             $lock = $this->db->prepare('SELECT last_number FROM inquiry_sequences WHERE received_day=? FOR UPDATE');
