@@ -18,6 +18,9 @@ try {
   };
   for(const url of ["contact.html","/contact.html","./privacy.html","../legal.html","/nested/contact.html","legal.html?draft=1","privacy.html#policy","%63ontact.html","/%70rivacy.html"])run(url,true);
   run("about.html",false);
+  run("missing-page.html",true);
+  run("/missing-page.html",true);
+  run("javascript:alert(1)",true);
   fs.writeFileSync(path.join(root,"legal.html"),"sample");
   const r=spawnSync(process.execPath,[path.join(__dirname,"check-release-scope.js"),root],{encoding:"utf8",timeout:10000});
   if(r.status!==0){passes++;console.log("PASS excluded file blocked");}
