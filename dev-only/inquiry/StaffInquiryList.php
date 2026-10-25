@@ -18,6 +18,14 @@ final class StaffInquiryList {
         if ($staffId < 1 || $limit < 1 || $limit > 100 || $offset < 0) {
             throw new InvalidArgumentException('Invalid pagination or identity');
         }
+        // Verify server-supplied identity against current database state; do not trust a stale role.
+        $identity = $this->db->prepare('SELECT staff_role, is_active FROM inquiry_staff WHERE id = :id');
+        $identity->bindValue(':id', $staffId, PDO::PARAM_INT);
+        $identity->execute();
+        $account = $identity->fetch(PDO::FETCH_ASSOC);
+        if (!$account || (int)$account['is_active'] !== 1 || !hash_equals((string)$account['staff_role'], $role)) {
+            throw new RuntimeException('Access denied');
+        }
         if (!StaffPermissions::can($role, 'inquiry_view', $staffId, $staffId)) {
             throw new RuntimeException('Access denied');
         }
