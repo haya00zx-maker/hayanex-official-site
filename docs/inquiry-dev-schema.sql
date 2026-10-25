@@ -77,3 +77,18 @@ CREATE TABLE inquiry_staff_mfa (
   enabled_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   FOREIGN KEY (staff_id) REFERENCES inquiry_staff(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Development-only append-only audit event log. Database permissions should not allow
+-- app users to UPDATE/DELETE these records; retention policy to be finalized.
+CREATE TABLE inquiry_audit_events (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  inquiry_id BIGINT UNSIGNED NOT NULL,
+  actor_staff_id BIGINT UNSIGNED NOT NULL,
+  event_type ENUM('status_change') NOT NULL,
+  old_value VARCHAR(40) NOT NULL,
+  new_value VARCHAR(40) NOT NULL,
+  occurred_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  FOREIGN KEY (inquiry_id) REFERENCES inquiries(id),
+  FOREIGN KEY (actor_staff_id) REFERENCES inquiry_staff(id),
+  INDEX idx_audit_inquiry_time (inquiry_id,occurred_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
