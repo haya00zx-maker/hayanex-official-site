@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<title>HAYANEX 管理画面・静的試作</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1040px;margin:0 auto;padding:24px;color:#182b45;background:#f6f8fb}h1{font-size:1.6rem}h2{font-size:1.2rem}.notice{background:#fff1d5;padding:14px;border-left:5px solid #b87400}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:24px 0}.card,.panel{background:white;border:1px solid #d5dce7;border-radius:12px;padding:18px}.card strong{display:block;font-size:2rem}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;border-bottom:1px solid #e3e9f1;padding:14px}th{background:#eaf0f7}.tag{background:#edf1fa;padding:5px 10px;border-radius:20px}footer{margin-top:25px;font-size:.875rem}</style>
+</head><body>
+<header><p>HAYANEX STAFF SYSTEM / DEVELOPMENT MOCKUP</p><h1>お問い合わせ受付管理（画面試作）</h1></header>
+<p class="notice" role="alert"><strong>開発確認専用・架空データのみ。</strong>このHTMLにはログイン機能、DB接続、実メール送信、案件変更機能はありません。公開サーバーへ配置しないでください。</p>
+<main>
+<section aria-label="案件件数" class="cards"><div class="card"><span>新規</span><strong>2</strong></div><div class="card"><span>確認中</span><strong>1</strong></div><div class="card"><span>対応中</span><strong>1</strong></div><div class="card"><span>完了</span><strong>1</strong></div><div class="card"><span>保留</span><strong>0</strong></div></section>
+<section class="panel"><h2>受付一覧（サンプル）</h2><p>実在の問い合わせを表示・保存するものではありません。</p><div class="table-wrap"><table><thead><tr><th scope="col">受付番号</th><th scope="col">区分</th><th scope="col">担当</th><th scope="col">状態</th></tr></thead><tbody>
+<tr><td>HX-20261025-0001</td><td>制作依頼</td><td>担当A</td><td><span class="tag">新規</span></td></tr>
+<tr><td>HX-20261025-0002</td><td>ご相談</td><td>担当B</td><td><span class="tag">確認中</span></td></tr>
+<tr><td>HX-20261025-0003</td><td>その他</td><td>担当A</td><td><span class="tag">対応中</span></td></tr>
+<tr><td>HX-20261025-0004</td><td>制作依頼</td><td>担当B</td><td><span class="tag">完了</span></td></tr>
+<tr><td>HX-20261025-0005</td><td>ご相談</td><td>未割当</td><td><span class="tag">新規</span></td></tr>
+</tbody></table></div></section>
+</main><footer>開発確認用の静的HTMLです。管理権限の実装・認証・個人情報保護のテストが終わるまで公開禁止。</footer></body></html>
