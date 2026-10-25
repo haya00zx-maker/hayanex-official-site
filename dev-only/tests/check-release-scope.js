@@ -35,15 +35,15 @@ for(const page of pages) {
     }
   }
   if(/代表確認用の制作版|確認用下書き/.test(html))errors.push(page+" still displays internal review wording");
-  if(/<form\\b/i.test(html))errors.push(page+" contains a form requiring separate approval");
-  for(const [,value] of html.matchAll(/\\bhref\\s*=\\s*["']([^"']+)["']/gi)){
+  if(/<form\b/i.test(html))errors.push(page+" contains a form requiring separate approval");
+  for(const [,value] of html.matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)){
     let ref=value.trim();
     if(!ref || ref.startsWith("#") || /^(?:https?:|mailto:|tel:)/i.test(ref))continue;
     if(/^(?:javascript:|data:|file:)/i.test(ref)){errors.push(page+" unsafe link scheme");continue;}
-    ref=ref.split(/[?#]/)[0].replace(/\\\\/g,"/");
+    ref=ref.split(/[?#]/)[0].replace(/\\/g,"/");
     try{ref=decodeURIComponent(ref);}catch{continue;}
-    if(!/\\.html$/i.test(ref))continue;
-    const target=path.posix.normalize("/"+ref.replace(/^\\/+/, "")).slice(1);
+    if(!/\.html$/i.test(ref))continue;
+    const target=path.posix.normalize("/"+ref.replace(/^\/+/, "")).slice(1);
     if(target.startsWith("../") || !fs.existsSync(path.join(candidate,target))){
       errors.push(page+" links to absent release page "+target);
     }
