@@ -18,9 +18,15 @@ if (extension_loaded('mbstring')) {
 } else {
     echo "SKIP validator_test.php: mbstring missing\n";
 }
+if (!function_exists('exec') || !function_exists('escapeshellarg')) {
+    fwrite(STDERR, "NOT RUN: PHP CLI subprocess functions are unavailable. Run the test files individually.\n");
+    exit(2);
+}
 $failures=0;
 foreach ($tests as $test) {
-    $command=escapeshellarg(PHP_BINARY).' '.escapeshellarg($base.'/'.$test);
+    $file=$base.'/'.$test;
+    if (!is_file($file)) { fwrite(STDERR,"MISSING: $test\n"); $failures++; continue; }
+    $command=escapeshellarg(PHP_BINARY).' '.escapeshellarg($file);
     $output=[]; $code=0;
     exec($command.' 2>&1',$output,$code);
     echo implode("\n",$output)."\n";
