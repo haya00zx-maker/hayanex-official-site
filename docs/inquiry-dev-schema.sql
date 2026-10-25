@@ -39,3 +39,11 @@ CREATE TABLE notification_outbox (
   UNIQUE KEY unique_notification (inquiry_id, notification_type),
   FOREIGN KEY (inquiry_id) REFERENCES inquiries(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Fixed-window abuse protection; periodically remove expired rows from an authorized maintenance job.
+CREATE TABLE inquiry_rate_limits (
+  key_hash CHAR(64) NOT NULL,
+  window_start BIGINT UNSIGNED NOT NULL,
+  attempts INT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (key_hash,window_start)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
