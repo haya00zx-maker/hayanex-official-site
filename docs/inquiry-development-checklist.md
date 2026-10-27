@@ -72,3 +72,11 @@ php dev-only/inquiry/tests/request_guard_test.php
 - 最終出力：`PASS: all offline suites passed. DB and HTTP integration remain untested.`
 - この結果はユーザー提示のSSH端末出力で確認。ファイル変更・受付送信・DB書込み試験は行っていない。
 - 残作業：DB統合（書込み・トランザクション・二重送信・並列性）、HTTP実接続、管理UI、認可/MFA結合、メール・添付・復元・セキュリティテスト。代表承認まで公開禁止。
+
+## 2026-10-27 読み取り専用DB事前診断（実機結果）
+
+- 実行：`/usr/bin/php8.3 /home/hayanex/hayanex-dev-tests/source/dev-only/inquiry/tests/db_preflight.php`、環境変数は実行時のみ設定、パスワード変数は実行後にunset。
+- 結果：`PASS: isolated development database connection and expected table names`。
+- 注記：`NOTE: this is a read-only preflight, not a CRUD, auth, MFA, or concurrency test`。
+- 開発用DB接続と9テーブル存在の確認に限る。実際の受付INSERT、二重登録、採番、同時実行、通知送信は未試験。
+- 次工程：既存実装・SQLスキーマのレビューを済ませ、テストデータのみの隔離DB統合テストを準備する。無断で本番反映しない。
