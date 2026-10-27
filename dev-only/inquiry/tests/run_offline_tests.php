@@ -11,6 +11,7 @@ $tests=[
     'request_guard_test.php',
     'staff_permissions_test.php',
     'staff_auth_test.php',
+    'staff_session_policy_test.php',
     'staff_totp_test.php',
     'staff_inquiry_status_test.php',
 ];
