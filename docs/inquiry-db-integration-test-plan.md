@@ -49,3 +49,11 @@ DB資格情報・実顧客データ・SSH秘密鍵・HMACシークレットはGi
 2026-10-27のXServerで、SSH、PHP 8.3、PDO接続、9テーブル存在、6種類のオフライン単体テストPASS、PHP構文検査PASS、読み取り専用DB事前診断PASSまで確認済み。
 
 **DB-01〜DB-07はまだ実行していない。** 管理画面、HTTP送信、実メール通知、添付、監査、MFA連携、本番公開も未承認・未試験。
+
+## 準備済みテストスクリプト（2026-10-27、未実行）
+
+- `dev-only/inquiry/tests/isolated_db_smoke_test.php` を `develop` に追加した。
+- 明示的な `HAYANEX_TEST_WRITE_ENABLE=YES_DISPOSABLE_DB_ONLY`、DB名が `_test` で終わること、既存 `hayanex_inquirydev` でないこと、対象4テーブルが空であることを実行前に確認する。
+- **このプログラムはINSERTを行う**。隔離専用テストDBが作成されるまで実行しない。実行後は架空の1件と未送信Outbox2件が残り、後片付けは別手順。
+- DB-01〜DB-04の基本ケースを部分検証し、DB-05（ロールバック）・DB-06（並列）・DB-07（DB制約の単独試験）は未対応。
+- DBパスワード・SSH鍵はソースにも管理台帳にも保存しない。まだXServer側に新しいDBを作成していない。
