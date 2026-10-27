@@ -41,3 +41,25 @@ php dev-only/inquiry/tests/request_guard_test.php
 - 個人情報取扱いの正式文面・代表最終公開承認が必要。
 
 実施したテストと未実施のテストを混同しない。日次作業報告で根拠を追跡する。
+
+## 2026-10-27 XServer実機確認記録（画面表示による確認）
+
+- SSHログイン：`hayanex@sv17285.xserver.jp` / ポート `10022` の接続に成功し、作業後にログアウト済み。
+- Web公開用PHPの設定変更は行っていない。CLIのデフォルト `php` は8.0.30だが、`/usr/bin/php8.3 -v` は **PHP 8.3.36** を返した。以下の検査コマンドでは必ずPHP 8.3を明示する。
+- PHP 8.3 CLIで `pdo_mysql`・`mbstring`・`sodium`・`json` がすべて `OK`。
+- 開発DB：`hayanex_inquirydev`、DBユーザー：`hayanex_0512`。MariaDB CLIログインに成功し、`SHOW TABLES;` で必要9テーブルの存在を確認。
+- PHP 8.3 CLIからPDOによる開発DB接続確認が `PHP DB CONNECTION: OK`。接続確認のみで、書き込み試験は実行していない。
+- SSH用秘密鍵・DBパスワードはGitHubに記録しない。ユーザー方針に従い、秘密鍵は暗号化されたバックアップをGoogleドライブで保管、SSH作業時のみ端末上に一時展開する。端末の一時展開物の削除状況は別途確認が必要。
+
+### 次に実施する単体試験（未実施）
+
+**非公開の開発用実行環境のみ**で、`dev-only/inquiry/` 全体を公開Webルートの外に配置し、実行前にコードが既存状態と一致することを確認する。
+
+```sh
+/usr/bin/php8.3 -l dev-only/inquiry/InquiryValidator.php
+/usr/bin/php8.3 -l dev-only/inquiry/InquiryRequestGuard.php
+/usr/bin/php8.3 dev-only/inquiry/tests/validator_test.php
+/usr/bin/php8.3 dev-only/inquiry/tests/request_guard_test.php
+```
+
+各テスト結果の `PASS/FAIL` を記録する。**まだこれらのテストを実行したとは扱わない**。書き込みを伴うDB統合試験は別の事前承認・安全設計を経て実施する。現行の公開サイト、`main`、DNS、実際の問い合わせ受付を変更しない。
