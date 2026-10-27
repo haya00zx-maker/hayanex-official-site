@@ -51,7 +51,7 @@ php dev-only/inquiry/tests/request_guard_test.php
 - PHP 8.3 CLIからPDOによる開発DB接続確認が `PHP DB CONNECTION: OK`。接続確認のみで、書き込み試験は実行していない。
 - SSH用秘密鍵・DBパスワードはGitHubに記録しない。ユーザー方針に従い、秘密鍵は暗号化されたバックアップをGoogleドライブで保管、SSH作業時のみ端末上に一時展開する。端末の一時展開物の削除状況は別途確認が必要。
 
-### 次に実施する単体試験（未実施）
+### 単体試験手順（2026-10-27実施済み、再実行用）
 
 **非公開の開発用実行環境のみ**で、`dev-only/inquiry/` 全体を公開Webルートの外に配置し、実行前にコードが既存状態と一致することを確認する。
 
@@ -62,4 +62,13 @@ php dev-only/inquiry/tests/request_guard_test.php
 /usr/bin/php8.3 dev-only/inquiry/tests/request_guard_test.php
 ```
 
-各テスト結果の `PASS/FAIL` を記録する。**まだこれらのテストを実行したとは扱わない**。書き込みを伴うDB統合試験は別の事前承認・安全設計を経て実施する。現行の公開サイト、`main`、DNS、実際の問い合わせ受付を変更しない。
+各テスト結果の `PASS/FAIL` を記録する。各個別コマンドの実行結果は別途記録する。一括テストは以下の通り実施済み。書き込みを伴うDB統合試験は別の事前承認・安全設計を経て実施する。現行の公開サイト、`main`、DNS、実際の問い合わせ受付を変更しない。
+
+## 2026-10-27 オフライン単体試験実行結果（SSH出力で確認）
+
+- 実行環境：XServer `sv17285`、非公開フォルダ `/home/hayanex/hayanex-dev-tests/source`、PHP CLI `/usr/bin/php8.3`。
+- 実行コマンド：`/usr/bin/php8.3 /home/hayanex/hayanex-dev-tests/source/dev-only/inquiry/tests/run_offline_tests.php`
+- 結果：`validator_test.php`、`request_guard_test.php`、`staff_permissions_test.php`、`staff_auth_test.php`、`staff_totp_test.php`、`staff_inquiry_status_test.php` の **6スイートすべて PASS**。
+- 最終出力：`PASS: all offline suites passed. DB and HTTP integration remain untested.`
+- この結果はユーザー提示のSSH端末出力で確認。ファイル変更・受付送信・DB書込み試験は行っていない。
+- 残作業：DB統合（書込み・トランザクション・二重送信・並列性）、HTTP実接続、管理UI、認可/MFA結合、メール・添付・復元・セキュリティテスト。代表承認まで公開禁止。
