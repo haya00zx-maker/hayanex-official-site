@@ -14,6 +14,7 @@ $tests=[
     'staff_session_policy_test.php',
     'staff_session_storage_test.php',
     'staff_totp_test.php',
+    'staff_mfa_crypto_test.php',
     'staff_inquiry_status_test.php',
 ];
 if (extension_loaded('mbstring')) {
