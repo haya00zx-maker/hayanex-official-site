@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "HAYANEX: PHP offline tests",
+      "type": "process",
+      "command": "php",
+      "args": [
+        "${workspaceFolder}/dev-only/inquiry/tests/run_offline_tests.php"
+      ],
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "HAYANEX: Staff login test",
+      "type": "process",
+      "command": "php",
+      "args": [
+        "${workspaceFolder}/dev-only/inquiry/tests/staff_login_flow_test.php"
+      ],
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "HAYANEX: Staff login syntax",
+      "type": "process",
+      "command": "php",
+      "args": [
+        "-l",
+        "${workspaceFolder}/dev-only/inquiry/StaffLoginFlow.php"
+      ],
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}
