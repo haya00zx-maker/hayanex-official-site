@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>スタッフ専用ログイン｜開発プレビュー｜HAYANEX</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;color:#172336;background:#f3f6fa;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
+.shell{width:min(100%,480px)}.brand{text-align:center;margin-bottom:24px}.logo{color:#123a70;font-size:1.45rem;font-weight:800;letter-spacing:.06em}.sub{font-size:.84rem;color:#526276;margin-top:6px}
+.notice{padding:12px 16px;background:#fff4d8;border:1px solid #ddbd75;border-radius:10px;font-size:.88rem;line-height:1.65;margin-bottom:16px}
+.panel{background:#fff;border:1px solid #dce3ec;border-radius:18px;box-shadow:0 18px 48px #162c4a14;padding:clamp(22px,5vw,36px)}
+h1{font-size:1.4rem;margin:0 0 9px}.intro{color:#53637a;line-height:1.8;font-size:.94rem;margin:0 0 24px}
+label{display:block;font-weight:700;font-size:.9rem;margin:18px 0 7px}
+input{width:100%;border:1px solid #a7b5c8;border-radius:9px;padding:13px 14px;font:inherit;background:#f7f9fc}
+input:focus-visible,button:focus-visible{outline:3px solid #2982d4;outline-offset:2px}
+button{width:100%;margin-top:24px;border:0;border-radius:9px;padding:14px;font:inherit;font-weight:750;background:#b5c2d0;color:#253b56;cursor:not-allowed}
+.hint{font-size:.84rem;color:#627289;line-height:1.7;margin:16px 0 0}.foot{text-align:center;color:#627289;font-size:.8rem;margin-top:22px;line-height:1.7}
+.steps{display:flex;gap:8px;margin-bottom:20px}.step{background:#eef3f8;border-radius:100px;padding:6px 12px;color:#41566f;font-size:.78rem}.step.current{background:#dbeafd;color:#124d94;font-weight:700}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="brand"><div class="logo">HAYANEX</div><div class="sub">ENTERPRISE PARTNERS — スタッフ専用サイト</div></header>
+<div class="notice" role="status"><strong>非公開開発プレビュー</strong><br>これは画面デザイン確認用です。認証・送信・データ保存は一切行いません。実際のIDやパスワードは入力しないでください。</div>
+<section class="panel" aria-labelledby="login-title">
+<div class="steps" aria-label="ログイン手順"><span class="step current">1. ID・パスワード</span><span class="step">2. MFA認証（対象者）</span></div>
+<h1 id="login-title">スタッフログイン</h1>
+<p class="intro">業務管理システムを利用するスタッフ向けのログイン画面です。代表者・管理者は追加認証が必要です。</p>
+<form onsubmit="return false" autocomplete="off">
+<label for="login-id">スタッフID</label>
+<input id="login-id" type="text" placeholder="スタッフID" disabled aria-describedby="disabled-hint">
+<label for="password">パスワード</label>
+<input id="password" type="password" placeholder="パスワード" disabled aria-describedby="disabled-hint">
+<button type="button" disabled>ログイン（開発中）</button>
+</form>
+<p class="hint" id="disabled-hint">安全確保のため、このプレビューでは入力とログイン操作を無効にしています。認証処理との接続は別工程で行います。</p>
+</section>
+<footer class="foot">© HAYANEX ENTERPRISE PARTNERS<br>開発用ファイル・本番公開禁止</footer>
+</main>
+</body>
+</html>
