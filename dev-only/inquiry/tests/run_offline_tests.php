@@ -12,6 +12,7 @@ $tests=[
     'staff_permissions_test.php',
     'staff_auth_test.php',
     'staff_session_policy_test.php',
+    'staff_login_flow_test.php',
     'staff_session_storage_test.php',
     'staff_totp_test.php',
     'staff_mfa_crypto_test.php',
