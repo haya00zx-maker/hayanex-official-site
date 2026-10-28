@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none'">
+<title>受付管理ダッシュボード｜非公開画面試作｜HAYANEX</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;color:#172c48;background:#f3f6fa}*{box-sizing:border-box}
+body{margin:0}.layout{max-width:1190px;padding:24px;margin:auto}header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-weight:850;color:#123b73;letter-spacing:.055em;font-size:1.3rem}.sub{font-size:.77rem;color:#526579}
+.notice{background:#fff0d0;border:1px solid #d9b76e;padding:14px 17px;border-radius:12px;margin:22px 0;line-height:1.75}
+h1{font-size:1.65rem;margin:20px 0 5px}h2{font-size:1.12rem;margin:0 0 12px}p{line-height:1.7}.muted{color:#526579;font-size:.91rem}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}label{font-weight:700}select{font:inherit;border:1px solid #a8bacd;border-radius:8px;padding:9px 13px;background:white}
+select:focus-visible,a:focus-visible{outline:3px solid #4086d7;outline-offset:3px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:24px 0}
+.card,.panel{border:1px solid #dce5ef;background:#fff;border-radius:15px;padding:21px;box-shadow:0 5px 20px #17345108}
+.card .value{font-weight:800;font-size:2rem;margin-top:6px}.card .label{font-size:.85rem;color:#51657d}
+.panel{margin-bottom:16px}.cols{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:570px;font-size:.92rem}th,td{text-align:left;padding:13px 10px;border-bottom:1px solid #e5ebf2}th{font-size:.81rem;color:#526579;background:#f4f7fb}
+.pill{display:inline-block;border-radius:30px;background:#e9f1ff;color:#214d87;padding:4px 10px;font-size:.8rem}
+.pill.wait{background:#fff0cf;color:#865200}.pill.done{background:#e1f4eb;color:#176542}
+ul{padding-left:21px;line-height:1.9}li{margin:4px 0}
+a{color:#235d9a}.empty{padding:25px;text-align:center;color:#53647b}
+footer{font-size:.82rem;color:#63748b;margin:25px 0}
+@media(max-width:740px){.layout{padding:16px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}h1{font-size:1.4rem}}
+</style>
+</head>
+<body>
+<main class="layout">
+<header><div><div class="brand">HAYANEX</div><div class="sub">ENTERPRISE PARTNERS / STAFF SYSTEM</div></div>
+<div class="controls"><label for="role">表示権限のサンプル</label><select id="role" aria-describedby="demo-note">
+<option value="owner">代表者（owner）</option><option value="admin">管理者（admin）</option><option value="staff">一般スタッフ（staff）</option></select></div></header>
+<div class="notice" id="demo-note" role="status"><strong>開発プレビュー・代表審査用</strong>：すべて架空データです。権限の切り替えは<strong>表示の比較のみ</strong>で、実際の認証・アクセス制限ではありません。ログイン、DB、外部送信、案件更新はできません。公開サーバーへ配置しないでください。</div>
+<h1>お問い合わせ受付管理</h1><p class="muted">受付状況・担当案件・権限別メニューのデザイン確認画面</p>
+<section class="cards" aria-label="件数のサンプル">
+<div class="card"><div class="label">新規受付</div><div class="value" id="new-count">2</div></div>
+<div class="card"><div class="label">確認中</div><div class="value" id="check-count">1</div></div>
+<div class="card"><div class="label">対応中</div><div class="value" id="working-count">1</div></div>
+<div class="card"><div class="label">完了</div><div class="value" id="done-count">1</div></div>
+</section>
+<div class="cols">
+<section class="panel" aria-labelledby="table-title"><h2 id="table-title">受付一覧（架空データ）</h2>
+<p class="muted" id="scope">全案件の表示例</p>
+<div class="tablewrap"><table><thead><tr><th scope="col">受付番号</th><th scope="col">お問い合わせ区分</th><th scope="col">担当</th><th scope="col">状況</th></tr></thead><tbody id="records"></tbody></table></div></section>
+<aside class="panel"><h2>利用可能な機能（デザイン案）</h2><p class="muted">実際の権限判定・操作機能ではありません。</p><ul id="capabilities"></ul>
+<h2>操作予定</h2><p class="muted">案件詳細・担当割当・状態更新・監査履歴は今後の開発対象です。</p></aside>
+</div>
+<footer>© HAYANEX ENTERPRISE PARTNERS — 非公開開発・代表承認前／データ保存なし</footer>
+</main>
+<script>
+'use strict';
+// Synthetic data only. This UI NEVER serves as an authorization boundary.
+const cases=[
+{number:'DEMO-0001',type:'サイト制作',assignee:'担当A',status:'新規',staff:true},
+{number:'DEMO-0002',type:'システム相談',assignee:'担当B',status:'確認中',staff:false},
+{number:'DEMO-0003',type:'事務代行',assignee:'担当A',status:'対応中',staff:true},
+{number:'DEMO-0004',type:'その他',assignee:'担当B',status:'完了',staff:false},
+{number:'DEMO-0005',type:'サイト制作',assignee:'未割当',status:'新規',staff:false}
+];
+const features={
+owner:['全受付案件の確認','スタッフ管理','権限設定','案件の割当・状況管理','監査履歴の確認'],
+admin:['全受付案件の確認','案件の割当・状況管理','監査履歴の確認'],
+staff:['自分に割り当てられた案件の確認','担当案件の状況確認']
+};
+const role=document.getElementById('role');
+const body=document.getElementById('records');
+const caps=document.getElementById('capabilities');
+function render(){
+const current=role.value;
+const visible=current==='staff'?cases.filter(item=>item.staff):cases;
+document.getElementById('scope').textContent=current==='staff'?'担当Aに割り当てられた案件のみ（架空の表示例）':'全案件の表示例（架空）';
+body.replaceChildren();
+const statuses={'新規':'new-count','確認中':'check-count','対応中':'working-count','完了':'done-count'};
+Object.keys(statuses).forEach(status=>document.getElementById(statuses[status]).textContent=String(visible.filter(item=>item.status===status).length));
+visible.forEach(item=>{
+const tr=document.createElement('tr');
+[item.number,item.type,item.assignee].forEach(s=>{const td=document.createElement('td');td.textContent=s;tr.append(td)});
+const td=document.createElement('td'),label=document.createElement('span');
+label.className='pill'+(item.status==='確認中'?' wait':item.status==='完了'?' done':'');label.textContent=item.status;td.append(label);tr.append(td);body.append(tr);
+});
+caps.replaceChildren();features[current].forEach(f=>{const li=document.createElement('li');li.textContent=f;caps.append(li)});
+}
+role.addEventListener('change',render);render();
+</script>
+</body></html>
