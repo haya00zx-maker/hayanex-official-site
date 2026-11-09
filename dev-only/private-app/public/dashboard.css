@@ -1,0 +1,290 @@
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Noto Sans JP",
+    sans-serif;
+  color: #172c48;
+  background: #f3f6fa;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+.layout {
+  max-width: 1190px;
+  padding: 24px;
+  margin: auto;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.brand {
+  font-weight: 850;
+  color: #123b73;
+  letter-spacing: 0.055em;
+  font-size: 1.3rem;
+}
+.sub {
+  font-size: 0.77rem;
+  color: #526579;
+}
+.notice {
+  background: #fff0d0;
+  border: 1px solid #d9b76e;
+  padding: 14px 17px;
+  border-radius: 12px;
+  margin: 22px 0;
+  line-height: 1.75;
+}
+h1 {
+  font-size: 1.65rem;
+  margin: 20px 0 5px;
+}
+h2 {
+  font-size: 1.12rem;
+  margin: 0 0 12px;
+}
+p {
+  line-height: 1.7;
+}
+.muted {
+  color: #526579;
+  font-size: 0.91rem;
+}
+.controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+label {
+  font-weight: 700;
+}
+select {
+  font: inherit;
+  border: 1px solid #a8bacd;
+  border-radius: 8px;
+  padding: 9px 13px;
+  background: white;
+}
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid #4086d7;
+  outline-offset: 3px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+}
+.card,
+.panel {
+  border: 1px solid #dce5ef;
+  background: #fff;
+  border-radius: 15px;
+  padding: 21px;
+  box-shadow: 0 5px 20px #17345108;
+}
+.card .value {
+  font-weight: 800;
+  font-size: 2rem;
+  margin-top: 6px;
+}
+.card .label {
+  font-size: 0.85rem;
+  color: #51657d;
+}
+.panel {
+  margin-bottom: 16px;
+}
+.cols {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+.tablewrap {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 570px;
+  font-size: 0.92rem;
+}
+th,
+td {
+  text-align: left;
+  padding: 13px 10px;
+  border-bottom: 1px solid #e5ebf2;
+}
+th {
+  font-size: 0.81rem;
+  color: #526579;
+  background: #f4f7fb;
+}
+.pill {
+  display: inline-block;
+  border-radius: 30px;
+  background: #e9f1ff;
+  color: #214d87;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+.pill.wait {
+  background: #fff0cf;
+  color: #865200;
+}
+.pill.done {
+  background: #e1f4eb;
+  color: #176542;
+}
+ul {
+  padding-left: 21px;
+  line-height: 1.9;
+}
+li {
+  margin: 4px 0;
+}
+a {
+  color: #235d9a;
+}
+.empty {
+  padding: 25px;
+  text-align: center;
+  color: #53647b;
+}
+footer {
+  font-size: 0.82rem;
+  color: #526579;
+  margin: 25px 0;
+}
+@media (max-width: 740px) {
+  .layout {
+    padding: 16px;
+  }
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .cols {
+    grid-template-columns: 1fr;
+  }
+  h1 {
+    font-size: 1.4rem;
+  }
+}
+
+a {
+  color: #164e89;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+button {
+  cursor: pointer;
+  background: #123b73;
+  color: #fff;
+  min-height: 48px;
+}
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  max-width: 100%;
+}
+label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+}
+textarea,
+select,
+input:not([type="checkbox"]) {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7rem;
+  border: 1px solid #75879e;
+  border-radius: 6px;
+}
+input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+}
+.controls form {
+  margin: 0;
+}
+.controls button {
+  margin: 0;
+  width: auto;
+  padding: 0.6rem 1rem;
+}
+form {
+  max-width: 760px;
+}
+p,
+td,
+th {
+  overflow-wrap: anywhere;
+}
+table {
+  min-width: 0;
+}
+td,
+th {
+  vertical-align: top;
+}
+.tablewrap {
+  max-width: 100%;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid #936923;
+  outline-offset: 3px;
+}
+.check {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.check input {
+  flex: none;
+}
+.notice {
+  color: #172336;
+}
+.shell .steps {
+  flex-wrap: wrap;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.cols {
+  grid-template-columns: 2fr 1fr;
+}
+@media (max-width: 740px) {
+  .cols {
+    grid-template-columns: 1fr;
+  }
+  .tablewrap table {
+    font-size: 0.85rem;
+  }
+  th,
+  td {
+    padding: 10px 5px;
+  }
+}
+
+body {
+  overflow-wrap: anywhere;
+}
