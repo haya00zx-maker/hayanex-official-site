@@ -11,7 +11,7 @@ require_once __DIR__.'/StaffAuth.php';
 final class StaffCredentialRepository {
     private const MAX_LOGIN_BYTES = 100;
     private const MAX_PASSWORD_BYTES = 1024;
-    /** Never use this development class to create an HTTP route. */
+    /** Integrate only behind the private HTTPS, CSRF, throttle and MFA controller. */
     public function __construct(private PDO $db) {
         if ($db->getAttribute(PDO::ATTR_ERRMODE) !== PDO::ERRMODE_EXCEPTION) {
             throw new InvalidArgumentException('PDO exception mode required');
@@ -31,7 +31,7 @@ final class StaffCredentialRepository {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         // Equalize common unknown-user and invalid-password paths without
         // generating an expensive hash on every request.
-        $dummy = '$2y$10$abcdefghijklmnopqrstuuoQEfct.XyoNGCe.dcsSLHxA3.XehOy2';
+        $dummy = StaffAuth::dummyHash();
         $verified = StaffAuth::verifyPassword($password, $row ? (string)$row['password_hash'] : $dummy);
         if (!$row || !$verified || (int)$row['is_active'] !== 1 ||
             !in_array($row['staff_role'], ['owner','admin','staff'], true)) {
@@ -41,6 +41,7 @@ final class StaffCredentialRepository {
             'staff_id'=>(int)$row['id'],
             'role'=>(string)$row['staff_role'],
             'mfa_required'=>StaffAuth::requiresMfa((string)$row['staff_role']),
+            'password_stamp'=>hash('sha256',(string)$row['password_hash']),
         ];
     }
 }

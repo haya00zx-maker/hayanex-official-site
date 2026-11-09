@@ -16,6 +16,7 @@ $cases = [
     'invalid selection'=>['service'=>'unrecognized'],
     'long message'=>['message'=>str_repeat('a',2001)],
     'organization needed'=>['client_type'=>'corporate'],
+    'invalid utf8'=>['message'=>"bad\xFFtext"],
     'invalid type'=>['email'=>['unexpected']],
     'control character'=>['message'=>"bad\x00text"],
 ];

@@ -17,6 +17,7 @@ $tests=[
     'staff_http_guard_test.php',
     'staff_login_rate_policy_test.php',
     'staff_session_storage_test.php',
+    'session_failure_test.php',
     'staff_totp_test.php',
     'staff_mfa_crypto_test.php',
     'staff_inquiry_status_test.php',

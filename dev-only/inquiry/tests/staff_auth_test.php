@@ -18,3 +18,13 @@ $assert(!StaffAuth::canStartSession('staff',true,false,true),'reject bad credent
 $assert(!StaffAuth::canStartSession('unknown',true,true,true),'reject unknown role');
 try { StaffAuth::hashPassword('short'); $assert(false,'reject short password'); }
 catch (InvalidArgumentException $e) {$assert(true,'reject short password');}
+
+// Regression: no suffix truncation beyond bcrypt's 72-byte boundary.
+$legacy=password_hash(str_repeat('a',72),PASSWORD_BCRYPT);
+if(StaffAuth::verifyPassword(str_repeat('a',72).'suffix',$legacy))throw new RuntimeException('bcrypt truncation accepted');
+echo "PASS reject legacy bcrypt long suffix\n";
+if(defined('PASSWORD_ARGON2ID')) {
+    $long=str_repeat('a',72).'correct-suffix';$hash=StaffAuth::hashPassword($long);
+    if(!StaffAuth::verifyPassword($long,$hash)||StaffAuth::verifyPassword(str_repeat('a',72).'wrong-suffix',$hash))throw new RuntimeException('Long password mismatch');
+    echo "PASS long password suffix is significant\n";
+}

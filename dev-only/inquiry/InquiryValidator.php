@@ -17,6 +17,7 @@ final class InquiryValidator {
             if (isset($input[$field]) && !is_string($input[$field])) {
                 throw new InvalidArgumentException('Invalid field type: '.$field);
             }
+            if (isset($input[$field]) && !mb_check_encoding($input[$field], 'UTF-8')) throw new InvalidArgumentException('Invalid UTF-8');
             $out[$field] = trim($input[$field] ?? '');
         }
         foreach (['inquiry_type','client_type','person_name','email','service','message'] as $field) {

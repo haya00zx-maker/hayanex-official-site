@@ -66,6 +66,7 @@ $day = (new DateTimeImmutable('now', new DateTimeZone('Asia/Tokyo')))->format('Y
 $seq = $db->prepare('SELECT last_number FROM inquiry_sequences WHERE received_day=?');
 $seq->execute([$day]);
 $prior = $seq->fetchColumn();
+$hadSequence = $prior !== false;
 $prior = $prior === false ? 0 : (int)$prior;
 
 $private = sys_get_temp_dir().'/hayanex-parallel-'.bin2hex(random_bytes(12));
@@ -97,7 +98,7 @@ try {
         } else echo 'WORKER '.($i+1).': PASS'.PHP_EOL;
     }
     if (!$allWorkersOk) stopParallel('one or more workers failed; inspect data before any retry');
-    $expectedDeltas = ['inquiries'=>2,'inquiry_requests'=>2,'notification_outbox'=>4,'inquiry_sequences'=>0];
+    $expectedDeltas = ['inquiries'=>2,'inquiry_requests'=>2,'notification_outbox'=>4,'inquiry_sequences'=>($hadSequence ? 0 : 1)];
     foreach ($expectedDeltas as $table=>$delta) {
         $after = (int)$db->query('SELECT COUNT(*) FROM `'.$table.'`')->fetchColumn();
         if ($after !== $before[$table]+$delta) stopParallel('unexpected row count: '.$table);

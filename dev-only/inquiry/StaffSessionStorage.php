@@ -30,7 +30,7 @@ final class StaffSessionStorage {
             'lifetime'=>0, 'path'=>'/', 'secure'=>true,
             'httponly'=>true, 'samesite'=>'Strict',
         ]);
-        if (!session_start()) throw new RuntimeException('Cannot start session');
+        if (!@session_start()) throw new RuntimeException('Cannot start session');
     }
 
     /** Only call after verification against the DB and required MFA. */
@@ -38,7 +38,7 @@ final class StaffSessionStorage {
         self::ensureActive();
         $identity = StaffSessionPolicy::issue($staffId,$role,$active,$passwordOk,$mfaOk,$now);
         // Rotate after success; never elevate an existing session identifier.
-        if (!session_regenerate_id(true)) throw new RuntimeException('Could not rotate session identifier');
+        if (!@session_regenerate_id(true)) throw new RuntimeException('Could not rotate session identifier');
         $_SESSION = [self::SESSION_KEY=>$identity];
     }
 
@@ -74,7 +74,7 @@ final class StaffSessionStorage {
                 'samesite'=>$params['samesite']??'Strict',
             ]);
         }
-        session_destroy();
+        if (!@session_destroy()) throw new RuntimeException('Could not destroy session');
     }
 
     private static function ensureActive(): void {
