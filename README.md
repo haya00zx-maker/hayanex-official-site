@@ -2,6 +2,17 @@
 
 HAYANEX ENTERPRISE PARTNERS の静的サイトです。HTML・CSS・JavaScriptのみで構成し、アプリの依存パッケージ、ビルド、API、データベースは使用しません。
 
+## 2026年11月9日：非公開の受付・スタッフ統合
+
+[開発統合報告](docs/DEVELOPMENT-REPORT-2026-11-09.md) ／ [ロードマップ](docs/PROJECT-ROADMAP-2026-11-09.md) ／ [再現手順](dev-only/runtime/README.md)
+
+- `dev-only/private-app/`：HTTPS・認証/MFA・担当案件の認可・受付・通知sinkを接続したローカル専用画面。
+- `dev-only/inquiry/`：既存PHP部品と原子的な試行制限・MFA検証・回帰試験。
+- `dev-only/runtime/`：公式イメージ固定の使い捨て環境。鍵・設定・fixture・バックアップはチェックアウト外。
+- 公開候補の `contact.html` は `assets/js/contact-prototype.js` による非送信試作のまま。
+
+本番公開不可。main・XServer・DNS・実メール・本番データは未操作。本番用接続、実配送、MFAの発行/復旧、正式な個人情報・法的文面等は残課題です。dev-only以下を公開Webルートに配置しないでください。
+
 ## ブランチ・公開方針
 
 - `develop`：制作・検証。現在は最終承認前の確認版です。
