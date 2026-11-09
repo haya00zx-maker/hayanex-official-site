@@ -112,7 +112,7 @@ fs.mkdirSync(artifacts, { recursive: true });
           assert(csp.includes(directive), label);
         assert(!/unsafe-inline|unsafe-eval/.test(csp));
         assert.equal(
-          await page.locator('form,iframe,input[type="password"]').count(),
+          await page.locator('iframe,input[type="password"]').count(),
           0,
         );
         assert.equal(
@@ -173,16 +173,10 @@ fs.mkdirSync(artifacts, { recursive: true });
         }
         if (file === "pricing.html") {
           assert.equal(await page.locator(".plan").count(), 6);
-          assert.equal(
-            await page
-              .locator(".plan-price")
-              .filter({ hasText: "料金未確定" })
-              .count(),
-            6,
-          );
+          assert.equal(await page.locator(".plan-price").count(), 6);
           assert(
             (await page.locator("main").innerText()).includes(
-              "月額保守契約は任意",
+              "買い切り制作には制作費の割引を適用しません",
             ),
           );
         }
@@ -234,11 +228,13 @@ fs.mkdirSync(artifacts, { recursive: true });
       assert.equal(await nj.locator(".nav-toggle").isVisible(), false);
       if (file === "contact.html") {
         assert.equal(
-          await nj.locator("#demo-fields").getAttribute("disabled"),
+          await nj
+            .locator("#contact-prototype fieldset")
+            .getAttribute("disabled"),
           "",
         );
-        assert(await nj.locator("#demo-name").isDisabled());
-        assert(await nj.locator("#demo-check").isDisabled());
+        assert(await nj.locator("#cp-name").isDisabled());
+        assert(await nj.locator("#cp-review").isDisabled());
       }
     }
     await nojs.close();
@@ -284,78 +280,94 @@ fs.mkdirSync(artifacts, { recursive: true });
     page.on("request", (r) =>
       requests.push({ url: r.url(), method: r.method() }),
     );
-    const check = page.locator("#demo-check");
+    const check = page.locator("#cp-review");
+    const sample = async () => {
+      await page.locator("#cp-sample").click();
+      await page.locator("#cp-consent").check();
+      await page.locator("#cp-demo").check();
+    };
     await check.click();
-    assert.equal(await page.locator('[aria-invalid="true"]').count(), 5);
+    assert.equal(await page.locator('[aria-invalid="true"]').count(), 8);
     assert.equal(
       await page.evaluate(() => document.activeElement.id),
-      "demo-name",
+      "cp-type",
     );
-    await page.locator("#demo-sample").click();
+    await page.locator("#cp-sample").click();
     await check.click();
-    assert.equal(await page.locator('[aria-invalid="true"]').count(), 1);
-    await page.locator("#demo-test-only").check();
+    assert.equal(await page.locator('[aria-invalid="true"]').count(), 2);
+    await sample();
     await check.click();
-    assert(
-      (await page.locator("#demo-status").innerText()).includes(
-        "送信・保存・受付は行っていません",
-      ),
-    );
-    await page.locator("#demo-email").fill("not-an-email");
+    assert(await page.locator("#cp-review-panel").isVisible());
+    await page.locator("#cp-back").click();
+    await page.locator("#cp-email").fill("not-an-email");
     await check.click();
     assert.equal(
-      await page.locator("#demo-email").getAttribute("aria-invalid"),
+      await page.locator("#cp-email").getAttribute("aria-invalid"),
       "true",
     );
-    await page.locator("#demo-email").fill("sample@example.com");
-    for (const [id, max] of [
-      ["demo-name", 50],
-      ["demo-message", 2000],
-      ["demo-email", 254],
+    await sample();
+    await page.locator("#cp-client").selectOption("corporate");
+    await check.click();
+    assert.equal(
+      await page.locator("#cp-organization").getAttribute("aria-invalid"),
+      "true",
+    );
+    for (const [key, max] of [
+      ["name", 50],
+      ["organization", 120],
+      ["email", 254],
+      ["phone", 20],
+      ["message", 2000],
+      ["budget", 60],
+      ["deadline", 60],
     ]) {
-      await page.locator("#" + id).evaluate((e, n) => {
+      await sample();
+      await page.locator("#cp-" + key).evaluate((e, n) => {
         e.value = "あ".repeat(n + 1);
       }, max);
       await check.click();
       assert.equal(
-        await page.locator("#" + id).getAttribute("aria-invalid"),
+        await page.locator("#cp-" + key).getAttribute("aria-invalid"),
         "true",
       );
-      await page.locator("#demo-sample").click();
-      await page.locator("#demo-test-only").check();
     }
-    await page.locator("#demo-name").fill("   ");
+    await sample();
+    await page.locator("#cp-name").fill("   ");
     await check.click();
     assert.equal(
-      await page.locator("#demo-name").getAttribute("aria-invalid"),
+      await page.locator("#cp-name").getAttribute("aria-invalid"),
       "true",
     );
-    await page.locator("#demo-name").fill("あ".repeat(50));
-    await page.locator("#demo-message").fill("あ".repeat(2000));
+    await sample();
+    await page.locator("#cp-name").fill("あ".repeat(50));
+    await page.locator("#cp-message").fill("あ".repeat(2000));
     await check.click();
-    assert.equal(await page.locator('[aria-invalid="true"]').count(), 0);
-    const payload = '<img src=x onerror="window.injected=true">';
-    await page.locator("#demo-message").fill(payload);
+    assert(await page.locator("#cp-review-panel").isVisible());
+    await page.locator("#cp-back").click();
+    await sample();
+    await page
+      .locator("#cp-message")
+      .fill('<img src=x onerror="window.injected=true">');
     await check.click();
     assert.equal(await page.evaluate(() => window.injected), undefined);
-    assert.equal(await page.locator("#demo-status img").count(), 0);
-    await page.locator("#demo-clear").click();
-    assert.equal(await page.locator("#demo-email").inputValue(), "");
-    assert.equal(await page.locator("#demo-test-only").isChecked(), false);
+    assert.equal(await page.locator("#cp-review-panel img").count(), 0);
+    await page.locator("#cp-back").click();
+    await page.locator('button[type="reset"]').click();
+    assert.equal(await page.locator("#cp-email").inputValue(), "");
+    assert.equal(await page.locator("#cp-demo").isChecked(), false);
     assert.equal(
       await page.evaluate(() => localStorage.length + sessionStorage.length),
       0,
     );
     assert.deepEqual(await context.cookies(), []);
     assert.deepEqual(requests, [], "入力検証中の通信がある");
-    await page.locator("#demo-check").click();
+    await check.click();
     await audit(page, "入力エラー表示");
-    await page.locator("#demo-sample").click();
-    await page.locator("#demo-test-only").check();
+    await sample();
     await check.click();
     await audit(page, "入力確認完了表示");
     await page.reload();
-    assert.equal(await page.locator("#demo-name").inputValue(), "");
+    assert.equal(await page.locator("#cp-name").inputValue(), "");
     await context.close();
     report.checks.push(
       "検証入力: 必須・メール・文字数境界・空白・XSS・消去・再読込・通信なし・保存なし 合格",
